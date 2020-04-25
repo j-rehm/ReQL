@@ -3,8 +3,6 @@ package models;
 import controllers.ReQL_IO;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,10 +27,9 @@ public class Select {
         this.whereValue = whereVal;
     }
 
-    public void find() {
+    public List<String[]> find() {
         List<String> rows = ReQL_IO.readFile(getTable().getFile());
         Pattern pattern = Pattern.compile(getTable().getPattern());
-
         List<String[]> tabluarData = new ArrayList<>();
 //        tabluarData.add(getSelectColumns().toArray(new String[0])); // Column Titles
 
@@ -53,19 +50,19 @@ public class Select {
         filter(tabluarData);
 
         tabluarData.add(0, getSelectColumns().toArray(new String[0]));
-        ReQL_IO.printTabularData(tabluarData);
+        return tabluarData;
     }
 
     private void filter(List<String[]> rows) {
         if (whereCol != null) {
             int colIndex = getSelectColumns().indexOf(whereCol);
 
-            System.out.println("Equality debug:");
-            for (int r = 0; r < rows.size(); r++) {
-                String col = rows.get(r)[colIndex];
-                System.out.println(r + ": " + col + " " + col.compareTo(whereValue));
-            }
-            System.out.println();
+//            System.out.println("Equality debug:");
+//            for (int r = 0; r < rows.size(); r++) {
+//                String col = rows.get(r)[colIndex];
+//                System.out.println(r + ": " + col + " " + col.compareTo(whereValue));
+//            }
+//            System.out.println();
 
             List<String> filter = new ArrayList<>();
             for (int r = 0; r < rows.size(); r++) {

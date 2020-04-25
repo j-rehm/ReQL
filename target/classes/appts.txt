@@ -1,3 +1,3 @@
 Selena Gomez;Dr. Taylor Swift;3/1/2020 11:00;laryngitis
-Chis Evans;Dr. Robert Downy Jr;11/29/2019 14:00;dietary consult
+Chris Evans;Dr. Robert Downy Jr;11/29/2019 14:00;dietary consult
 James Earl Jones;Dr. Mark Hamill;5/21/1980 9:00;paternity test

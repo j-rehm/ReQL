@@ -15,13 +15,33 @@ public class TableController {
         parameters = cleanParameters(parameters);
         String title = parameters[0];
         List<String> columns = StatementParser.getColumns(parameters[1]);
-        Table table = new Table(title, columns, parameters[2], parameters[3]);
-        if (getTable(title) != null) {
-            System.out.println("A table by that name already exists!");
+
+        boolean duplicateColumns = false;
+        for (String col1 : columns) {
+            List<String> others = new ArrayList<String>(columns);
+            others.remove(col1);
+
+            for (String col2 : others) {
+                if (col1.equals(col2)) {
+                    duplicateColumns = true;
+                    break;
+                }
+            }
+        }
+
+        if (getTable(title) == null) {
+            if (!duplicateColumns) {
+                Table table = new Table(title, columns, parameters[2], parameters[3]);
+                tables.add(table);
+
+                System.out.println("Table Created!");
+                ReQL_IO.saveSchema(parameters);
+                System.out.println(table.toString());
+            } else {
+                System.out.println("Column names must be unique. Please, try again.\n");
+            }
         } else {
-            tables.add(table);
-            System.out.println("Table Created!");
-            System.out.println(table.toString());
+            System.out.println("A table by that name already exists!\n");
         }
     }
 
@@ -29,11 +49,11 @@ public class TableController {
         parameters = cleanParameters(parameters);
 
         Table table = getTable(parameters[1]);
-        List<String> columns = (parameters[0].length() == 1 && parameters[0].equals("*"))? table.getColumns() : StatementParser.getColumns(parameters[0]);
-
         if (table == null) {
-            System.out.println("Table '" + parameters[1] + "' does not exist.");
+            System.out.println("Table '" + parameters[1] + "' does not exist.\n");
         } else {
+            List<String> columns = (parameters[0].length() == 1 && parameters[0].equals("*"))? table.getColumns() : StatementParser.getColumns(parameters[0]);
+
             Select select;
             if (parameters[2] == null) {
                 select = new Select(columns, table);
@@ -41,7 +61,9 @@ public class TableController {
                 select = new Select(columns, table, parameters[2], WhereOperand.parseFromString(parameters[3]), parameters[4]);
             }
             System.out.println(select.toString());
-            select.find();
+
+            List<String[]> result = select.find();
+            ReQL_IO.printTabularData(result);
         }
     }
 

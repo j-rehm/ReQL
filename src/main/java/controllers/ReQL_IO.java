@@ -1,16 +1,17 @@
 package controllers;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import models.Table;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ReQL_IO {
+    private static String schemaPath = "src/main/resources/schema/schemas.txt";
+
     public static List<String> getStatement() {
         BufferedReader buffy = new BufferedReader(new InputStreamReader(System.in));
-
         List<String> multiLineInput = new ArrayList<>();
 
         // Continually gets user input, adding each line to multiLineInput, until user enters command terminator (;)
@@ -30,17 +31,30 @@ public class ReQL_IO {
         return multiLineInput;
     }
 
-    public static List<String> readFile(String file) {
+    public static List<String> readFile(String path) {
         List<String> lines = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader buffy = new BufferedReader(new FileReader(path))) {
             String line;
-            while ((line = br.readLine()) != null) {
+            while ((line = buffy.readLine()) != null) {
                 lines.add(line);
             }
         } catch (IOException e) {
-            System.out.println("The file '" + file + "' cannot be found.");
+            System.out.println("The file '" + path + "' cannot be found.");
         }
         return lines;
+    }
+
+    private static void writeFile(String path, String line) {
+        StringBuilder sb = new StringBuilder();
+        for (String schema : readFile(schemaPath)) {
+            sb.append(schema).append("\n");
+        }
+        sb.append(line);
+        try (BufferedWriter buffy = new BufferedWriter(new FileWriter(path))) {
+            buffy.write(sb.toString());
+        } catch (IOException e) {
+            System.out.println("Could not save schema.");
+        }
     }
 
     public static void printTabularData(List<String[]> tabluarData) {
@@ -64,5 +78,41 @@ public class ReQL_IO {
 
     public static void unrecognizedStatement() {
         System.out.println("Sorry, the statement you provided was not recognized. Please, try again.\n");
+    }
+
+    public static void saveSchema(String[] newSchema) {
+        List<String> schemas = readFile(schemaPath);
+        boolean duplicate = false;
+        for (String rawSchema : schemas) {
+            String[] schema = StatementParser.matchCreatePattern(rawSchema);
+            if (newSchema[0].equals(schema[0])) {
+                duplicate = true;
+                break;
+            }
+//            System.out.println(newSchema[0] + " =? " + schema[0] + " : " + duplicate);
+        }
+        if(!duplicate) {
+            writeFile(schemaPath, flattenCreateParameters(newSchema));
+            System.out.println("Table '" + newSchema[0] + "' Schema Saved!");
+        }
+    }
+
+    private static String flattenCreateParameters(String[] parameters) {
+        StringBuilder sb = new StringBuilder();
+        List<String> cols = StatementParser.getColumns(parameters[1]);
+
+        sb.append("CREATE TABLE '").append(parameters[0]).append("' (");
+        for (int c = 0; c < cols.size(); c++) {
+            sb.append(cols.get(c)).append((c < cols.size() - 1)? ", " : "");
+        }
+        sb.append(") : line format /").append(parameters[2]).append("/ file '").append(parameters[3]).append("';");
+
+        return sb.toString();
+    }
+
+    public static void loadSchemas() {
+        for (String schema : readFile(schemaPath)) {
+            TableController.create(StatementParser.matchCreatePattern(schema));
+        }
     }
 }
