@@ -6,8 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StatementParser {
-    private static final Pattern CREATE_PATTERN = Pattern.compile("\\s*CREATE\\s+TABLE\\s+'([A-Za-z]\\w*)'\\s+\\(\\s*((?:[\\w_]+,\\s*)*[\\w_]+)\\s*\\)\\s*:\\s*line\\s+format\\s+\\/(.*)\\/\\s+file\\s+'(.*\\.txt)\\s*';\\s*");
-    private static final Pattern SELECT_PATTERN = Pattern.compile("\\s*SELECT\\s+((?:(?:[\\w_]+,\\s*)*[\\w_]+)|\\*)\\s+FROM\\s+([A-Za-z][\\w]*)\\s*?(?:\\s+WHERE\\s+([\\w_]+)\\s*((?:=|>=|<=|>|<)) \\s*'((?:\\d{1,2}\\/){2}\\d{4})'\\s*)?;");
+    private static final Pattern CREATE_PATTERN = Pattern.compile("\\s*?CREATE\\s+?TABLE\\s+?'([A-Za-z]\\w*)'\\s+?\\(\\s*?((?:[\\w_]+,\\s*?)*[\\w_]+)\\s*?\\)\\s*?:\\s*?line\\s+?format\\s+?\\/(.*?)\\/\\s+?file\\s+?'(.*?\\.txt)\\s*?';\\s*");
+    private static final Pattern SELECT_PATTERN = Pattern.compile("\\s*?SELECT\\s+?((?:(?:[\\w_]+,\\s*?)*[\\w_]+)|\\*)\\s+?FROM\\s+?([A-Za-z][\\w]*)\\s*?(?:\\s+?WHERE\\s+?([\\w_]+)\\s*?((?:=|>=|<=|>|<))\\s*'(.+?)'\\s*?)?;\\s*");
 
     public static String flattenInputStatement(List<String> multiLineInput) {
         // Flattens multiLineInput into flattenedInput
