@@ -43,6 +43,17 @@ public class ReQL_IO {
         return lines;
     }
 
+    public static void printTabularData(List<String[]> tabluarData) {
+//        int[] maxLengths = new int[tabluarData.size()];
+        for (String[] row : tabluarData) {
+            StringBuilder sb = new StringBuilder();
+            for (String col : row) {
+                sb.append(col).append(" ");
+            }
+            System.out.println(sb.toString());
+        }
+    }
+
     public static void unrecognizedStatement() {
         System.out.println("Sorry, the statement you provided was not recognized. Please, try again.\n");
     }

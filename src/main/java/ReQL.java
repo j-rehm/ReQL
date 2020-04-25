@@ -7,6 +7,9 @@ public class ReQL {
     public static void main(String[] args) {
         String input;
 
+        // TODO remove - creates default table
+        TableController.create(StatementParser.matchCreatePattern("CREATE TABLE 'mylog' (date, time, log_level, src_ip, username, msg) : line format /(\\d{4}-\\d{2}-\\d{2}) (\\d{2}:\\d{2}:\\d{2}) (\\([A-Z]+\\) \\[[a-z]+-\\d+-[a-z]+-\\d+\\]) ((?:\\d{1,3}.){3}\\d{1,3}) ([a-z]+) : (.*$)/ file 'src/main/resources/mylog.txt';"));
+
         String exitString = "exit".trim();
         System.out.println("Type '" + exitString + "' to exit.");
         do {

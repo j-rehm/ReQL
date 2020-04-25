@@ -2,6 +2,7 @@ package models;
 
 import controllers.ReQL_IO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,19 +31,24 @@ public class Select {
         List<String> rows = ReQL_IO.readFile(getTable().getFile());
         Pattern pattern = Pattern.compile(getTable().getPattern());
 
+        List<String[]> tabluarData = new ArrayList<>();
+        tabluarData.add(getSelectColumns().toArray(new String[0])); // Column Titles
+
         for (String row : rows) {
             Matcher matcher = pattern.matcher(row);
             if (matcher.find()) {
-
+                List<String> columns = new ArrayList<>();
                 for (String col : getSelectColumns()) {
-//                    System.out.println(getTable().getColumns().indexOf(col));
-                    System.out.println(matcher.group(getTable().getColumns().indexOf(col) + 1));
+                    columns.add(matcher.group(getTable().getColumns().indexOf(col) + 1));
                 }
+                tabluarData.add(columns.toArray(new String[0]));
             } else {
                 System.out.println("The pattern /" + getTable().getPattern() + "/ could not match the row\n" + row);
+                break;
             }
         }
 
+        ReQL_IO.printTabularData(tabluarData);
     }
 
     public Table getTable() {
