@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,7 +19,7 @@ public class StatementParser {
         flattenedInput = inputBuilder.toString();
 
         // Replaces all extraneous spaces and returns with a single whitespace character
-//        flattenedInput = flattenedInput.replaceAll("[\\s]+", " ");
+//        flattenedInput = flattenedInput.replaceAll("[\\s]+", " "); REMOVED - can interfere with regular expression
 
         return flattenedInput;
     }
@@ -59,5 +60,13 @@ public class StatementParser {
         parameters[4] = m.group(5);
 
         return parameters;
+    }
+
+    public static List<String> getColumns(String csv) {
+        List<String> columns = new ArrayList<>();
+        for (String col : csv.split(",")) {
+            columns.add(col.trim());
+        }
+        return columns;
     }
 }

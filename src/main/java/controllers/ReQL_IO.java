@@ -1,12 +1,13 @@
 package controllers;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReQLConsoleIO {
+public class ReQL_IO {
     public static List<String> getStatement() {
         BufferedReader buffy = new BufferedReader(new InputStreamReader(System.in));
 
@@ -27,6 +28,19 @@ public class ReQLConsoleIO {
         } while (!lastLine.trim().endsWith(";"));
 
         return multiLineInput;
+    }
+
+    public static List<String> readFile(String file) {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("The file '" + file + "' cannot be found.");
+        }
+        return lines;
     }
 
     public static void unrecognizedStatement() {
