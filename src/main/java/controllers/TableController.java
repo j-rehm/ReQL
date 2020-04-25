@@ -28,8 +28,9 @@ public class TableController {
     public static void select(String[] parameters) {
         parameters = cleanParameters(parameters);
 
-        List<String> columns = StatementParser.getColumns(parameters[0]);
         Table table = getTable(parameters[1]);
+        List<String> columns = (parameters[0].length() == 1 && parameters[0].equals("*"))? table.getColumns() : StatementParser.getColumns(parameters[0]);
+
         if (table == null) {
             System.out.println("Table '" + parameters[1] + "' does not exist.");
         } else {
