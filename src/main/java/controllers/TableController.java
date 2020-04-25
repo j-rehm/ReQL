@@ -41,7 +41,7 @@ public class TableController {
                 select = new Select(columns, table, parameters[2], WhereOperand.parseFromString(parameters[3]), parameters[4]);
             }
             System.out.println(select.toString());
-            select.execute();
+            select.find();
         }
     }
 

@@ -36,28 +36,33 @@ public class StatementParser {
 
     public static String[] matchCreatePattern(String input) {
         Matcher m = CREATE_PATTERN.matcher(input);
-        m.find();
-
         String[] parameters = new String[4];
 
-        parameters[0] = m.group(1);
-        parameters[1] = m.group(2);
-        parameters[2] = m.group(3);
-        parameters[3] = m.group(4);
+        if (m.find()) {
+            parameters[0] = m.group(1);
+            parameters[1] = m.group(2);
+            parameters[2] = m.group(3);
+            parameters[3] = m.group(4);
+        } else {
+            System.out.println("Your input was not recognized. Please, try again.");
+        }
 
         return parameters;
     }
 
     public static String[] matchSelectPattern(String input) {
         Matcher m = SELECT_PATTERN.matcher(input);
-        m.find();
-
         String[] parameters = new String[5];
-        parameters[0] = m.group(1);
-        parameters[1] = m.group(2);
-        parameters[2] = m.group(3);
-        parameters[3] = m.group(4);
-        parameters[4] = m.group(5);
+
+        if (m.find()) {
+            parameters[0] = m.group(1);
+            parameters[1] = m.group(2);
+            parameters[2] = m.group(3);
+            parameters[3] = m.group(4);
+            parameters[4] = m.group(5);
+        } else {
+            System.out.println("Your input was not recognized. Please, try again.");
+        }
 
         return parameters;
     }

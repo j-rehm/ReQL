@@ -44,17 +44,19 @@ public class ReQL_IO {
     }
 
     public static void printTabularData(List<String[]> tabluarData) {
-        int[] maxLengths = new int[tabluarData.get(0).length];
+        // Get the maximum width of each column
+        int[] maxColWidth = new int[tabluarData.get(0).length];
         for (String[] row : tabluarData) {
             for (int c = 0; c < row.length; c++) {
-                maxLengths[c] = Math.max(maxLengths[c], row[c].length());
+                maxColWidth[c] = Math.max(maxColWidth[c], row[c].length());
             }
         }
 
+        // Print each column with proper spacing
         for (String[] row : tabluarData) {
             StringBuilder sb = new StringBuilder();
             for (int c = 0; c < row.length; c++) {
-                sb.append(String.format("%-" + (maxLengths[c] + 3) + "s", row[c]));
+                sb.append(String.format("%-" + (maxColWidth[c] + 3) + "s", row[c]));
             }
             System.out.println(sb.toString());
         }

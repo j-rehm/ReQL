@@ -50,13 +50,13 @@ public class Table {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Title:   ").append(getTitle()).append("\n");
-        sb.append("Columns: ").append(getColumns().toArray()[0]).append("\n");
+        sb.append("Title:    ").append(getTitle()).append("\n");
+        sb.append("Columns:  ").append(getColumns().toArray()[0]).append("\n");
         for (int i = 1; i < getColumns().size(); i++) {
-            sb.append("         ").append(getColumns().toArray()[i]).append("\n");
+            sb.append("          ").append(getColumns().toArray()[i]).append("\n");
         }
-        sb.append("Pattern: ").append(getPattern()).append("\n");
-        sb.append("File:    ").append(getFile()).append("\n");
+        sb.append("Pattern:  ").append(getPattern()).append("\n");
+        sb.append("File:     ").append(getFile()).append("\n");
         return sb.toString();
     }
 }
