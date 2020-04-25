@@ -1,6 +1,6 @@
-import models.ReQLConsoleIO;
+import controllers.ReQLConsoleIO;
 import controllers.TableController;
-import models.StatementParser;
+import controllers.StatementParser;
 
 public class ReQL {
 
