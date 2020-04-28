@@ -59,9 +59,9 @@ public class ReQL_IO {
 
     public static void printTabularData(List<String[]> tabluarData) {
         // Get the maximum width of each column
-        int[] maxColWidth = new int[tabluarData.get(0).length];
-        for (String[] row : tabluarData) {
-            for (int c = 0; c < row.length; c++) {
+        int[] maxColWidth = new int[tabluarData.get(0).length]; // array length equal to length of arbitrary row (all rows should the same length)
+        for (String[] row : tabluarData) { // iterate over each row
+            for (int c = 0; c < row.length; c++) { // iterate over each column
                 maxColWidth[c] = Math.max(maxColWidth[c], row[c].length());
             }
         }
